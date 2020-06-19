@@ -32,7 +32,8 @@ injector:
   # required.
   agentImage:
     repository: "vault"
-    tag: "1.4.2"
+    #tag: "1.4.2"
+    tag: "1.3.6"
 
   # Mount Path of the Vault Kubernetes Auth Method.
   authPath: "auth/kubernetes"
@@ -115,7 +116,8 @@ server:
 
   image:
     repository: "vault"
-    tag: "1.4.2"
+    #tag: "1.4.2"
+    tag: "1.3.6"
     # Overrides the default Image Pull Policy
     pullPolicy: IfNotPresent
 
@@ -189,7 +191,7 @@ server:
   readinessProbe:
     enabled: true
     # If you need to use a http path instead of the default exec
-    #path: "/v1/sys/health?standbyok=true"
+    # path: /v1/sys/health?standbyok=true
   # Used to enable a livenessProbe for the pods
   livenessProbe:
     enabled: false
@@ -335,7 +337,7 @@ server:
   # the "file" backend.  This mode is not highly available and should not be scaled
   # past a single replica.
   standalone:
-    enabled: false
+    enabled: "-"
 
     # config is a raw string of default configuration when using a Stateful
     # deployment. Default is to use a PersistentVolumeClaim mounted at /vault/data
@@ -463,7 +465,7 @@ ui:
   # serviceType can be used to control the type of service created. For
   # example, setting this to "LoadBalancer" will create an external load
   # balancer (for supported K8S installations) to access the UI.
-  enabled: true
+  enabled: false
   serviceType: "ClusterIP"
   serviceNodePort: null
   externalPort: 8200

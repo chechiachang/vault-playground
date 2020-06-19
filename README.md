@@ -15,12 +15,14 @@ helm search repo hashicorp/consul
 
 wget -O consul-values.yaml https://raw.githubusercontent.com/hashicorp/consul-helm/master/values.yaml
 
-helm install --namespace=vault --values=consul-values.yaml --dry-run vault hashicorp/consul
+helm install --namespace=vault --values=${DIR}/consul-values.yaml --dry-run vault hashicorp/consul
 
-helm install --namespace=vault --values=consul-values.yaml consul hashicorp/consul
+helm install --namespace=vault --values=${DIR}/consul-values.yaml consul hashicorp/consul
 ```
 
 [vault helm](https://github.com/hashicorp/vault-helm)
+
+Use version 1.3.6 to avoid vault timeout in 1.4.x
 
 ```
 helm repo add hashicorp https://helm.releases.hashicorp.com
@@ -28,13 +30,12 @@ helm search repo hashicorp/vault
 
 wget -O vault-values.yaml https://raw.githubusercontent.com/hashicorp/vault-helm/master/values.yaml
 
-helm install --namespace=vault --values=vault-values.yaml --dry-run vault hashicorp/vault
+helm install --namespace=vault --values=${DIR}/vault-values.yaml --dry-run vault hashicorp/vault
 
-helm install --namespace=vault --values=vault-values.yaml vault hashicorp/vault
+helm install --namespace=vault --values=${DIR}/vault-values.yaml vault hashicorp/vault
 ```
 
-Initialize
+# Initialize
+
 ```
-kubectl exec vault-0 -- vault operator init -key-shares=5 -key-threshold=3 -format=json | tee cluster-keys.json
-cat cluster-keys.json | jq -r ".unseal_keys_b64[]"
 ```

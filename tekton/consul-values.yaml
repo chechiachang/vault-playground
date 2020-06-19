@@ -12,7 +12,7 @@ global:
 
   # name sets the prefix used for all resources in the helm chart.
   # If not set, the prefix will be "<helm release name>-consul".
-  name: consul
+  name: null
 
   # domain is the domain Consul will answer DNS queries for
   # (see https://www.consul.io/docs/agent/options.html#_domain) and the domain
@@ -223,7 +223,7 @@ global:
 # be disabled if you plan on connecting to a Consul cluster external to
 # the Kube cluster.
 server:
-  enabled: true
+  enabled: "-"
   image: null
   replicas: 3
   bootstrapExpect: 3 # Should <= replicas count
@@ -656,8 +656,7 @@ syncCatalog:
     # consulDestinationNamespace is the name of the Consul namespace to register all
     # k8s services into. If the Consul namespace does not already exist,
     # it will be created. This will be ignored if `mirroringK8S` is true.
-    #consulDestinationNamespace: "default"
-    consulDestinationNamespace: "vault"
+    consulDestinationNamespace: "default"
 
     # mirroringK8S causes k8s services to be registered into a Consul namespace
     # of the same name as their k8s namespace, optionally prefixed if
