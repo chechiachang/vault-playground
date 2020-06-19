@@ -189,7 +189,7 @@ server:
   readinessProbe:
     enabled: true
     # If you need to use a http path instead of the default exec
-    path: "/v1/sys/health?standbyok=true"
+    #path: "/v1/sys/health?standbyok=true"
   # Used to enable a livenessProbe for the pods
   livenessProbe:
     enabled: false
@@ -384,7 +384,7 @@ server:
     raft:
 
       # Enables Raft integrated storage
-      enabled: true
+      enabled: false
       # Set the Node Raft ID to the name of the pod
       setNodeId: false
     

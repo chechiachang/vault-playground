@@ -32,3 +32,9 @@ helm install --namespace=vault --values=vault-values.yaml --dry-run vault hashic
 
 helm install --namespace=vault --values=vault-values.yaml vault hashicorp/vault
 ```
+
+Initialize
+```
+kubectl exec vault-0 -- vault operator init -key-shares=5 -key-threshold=3 -format=json | tee cluster-keys.json
+cat cluster-keys.json | jq -r ".unseal_keys_b64[]"
+```
