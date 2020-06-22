@@ -465,7 +465,7 @@ ui:
   # serviceType can be used to control the type of service created. For
   # example, setting this to "LoadBalancer" will create an external load
   # balancer (for supported K8S installations) to access the UI.
-  enabled: false
+  enabled: true
   serviceType: "ClusterIP"
   serviceNodePort: null
   externalPort: 8200

@@ -8,7 +8,7 @@ global:
   # "enabled" config.
   # If false, no components will be installed by default and per-component
   # opt-in is required, such as by setting `server.enabled` to true.
-  enabled: true
+  enabled: false
 
   # name sets the prefix used for all resources in the helm chart.
   # If not set, the prefix will be "<helm release name>-consul".
@@ -223,7 +223,7 @@ global:
 # be disabled if you plan on connecting to a Consul cluster external to
 # the Kube cluster.
 server:
-  enabled: "-"
+  enabled: true
   image: null
   replicas: 3
   bootstrapExpect: 3 # Should <= replicas count
@@ -249,7 +249,7 @@ server:
   # connect will enable Connect on all the servers, initializing a CA
   # for Connect-related connections. Other customizations can be done
   # via the extraConfig setting.
-  connect: true
+  connect: false
 
   # Resource settings for Server agents.
   # NOTE: The use of a YAML string is deprecated. Instead, set directly as a
