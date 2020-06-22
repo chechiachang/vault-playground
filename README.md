@@ -5,7 +5,7 @@ Vault Playground
 
 [Download](https://releases.hashicorp.com/vault/1.4.2/vault_1.4.2_darwin_amd64.zip)
 
-# Server (helm)
+# Vault on Consul
 
 [consul helm](https://github.com/hashicorp/consul-helm)
 
@@ -33,6 +33,19 @@ wget -O vault-values.yaml https://raw.githubusercontent.com/hashicorp/vault-helm
 helm install --namespace=vault --values=${DIR}/vault-values.yaml --dry-run vault hashicorp/vault
 
 helm install --namespace=vault --values=${DIR}/vault-values.yaml vault hashicorp/vault
+```
+
+```
+DIR=consul make dry-run
+DIR=consul make install
+```
+
+# Vault on PostgreSQL
+
+Update postgresql `connection_url`
+
+```
+DIR=tekton make vault
 ```
 
 # Initialize
