@@ -27,10 +27,11 @@ init:
 	kubectl -n vault exec vault-0 -- vault operator init -key-shares=5 -key-threshold=3 -format=json | tee cluster-keys.json
 
 VAULT_UNSEAL_KEYS:=$(shell cat cluster-keys.json | jq -r ".unseal_keys_b64[]" | tr '\n' ' ')
+# Use first 3 keys to unseal
 unseal:
 	declare -a VAULT_UNSEAL_KEYS=($(VAULT_UNSEAL_KEYS)); \
 	for v in vault-0 vault-1 vault-2; do \
-		for k in $${VAULT_UNSEAL_KEYS[@]}; do \
+		for k in $${VAULT_UNSEAL_KEYS[@]:0:3}; do \
 			kubectl -n vault exec $$v -- vault operator unseal $$k; \
 		done \
 	done
