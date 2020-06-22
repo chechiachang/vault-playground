@@ -23,7 +23,7 @@ helm install --namespace=vault --values=${DIR}/consul-values.yaml consul hashico
 [vault helm](https://github.com/hashicorp/vault-helm)
 
 Use version 1.3.6 to avoid vault timeout in 1.4.x
-
+Enable raft storage to avoid using consul.
 ```
 helm repo add hashicorp https://helm.releases.hashicorp.com
 helm search repo hashicorp/vault
