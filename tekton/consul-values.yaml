@@ -249,7 +249,7 @@ server:
   # connect will enable Connect on all the servers, initializing a CA
   # for Connect-related connections. Other customizations can be done
   # via the extraConfig setting.
-  connect: false
+  connect: true
 
   # Resource settings for Server agents.
   # NOTE: The use of a YAML string is deprecated. Instead, set directly as a
@@ -569,7 +569,7 @@ ui:
   # on the server nodes. This makes UI access via the service below (if
   # enabled) predictable rather than "any node" if you're running Consul
   # clients as well.
-  enabled: "-"
+  enabled: true
 
   # True if you want to create a Service entry for the Consul UI.
   #

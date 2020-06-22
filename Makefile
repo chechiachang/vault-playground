@@ -32,6 +32,6 @@ unseal:
 	declare -a VAULT_UNSEAL_KEYS=($(VAULT_UNSEAL_KEYS)); \
 	for v in vault-0 vault-1 vault-2; do \
 		for k in $${VAULT_UNSEAL_KEYS[@]:0:3}; do \
-			kubectl -n vault exec $$v -- vault operator unseal $$k; \
+			kubectl -n vault exec $$v -- vault operator unseal $$k; sleep 1;\
 		done \
 	done
