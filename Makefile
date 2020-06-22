@@ -13,9 +13,13 @@ dry-run:
 	helm install --namespace=vault --values=${DIR}/consul-values.yaml --dry-run vault hashicorp/consul
 	helm install --namespace=vault --values=${DIR}/vault-values.yaml --dry-run vault hashicorp/vault
 
-install:
+consul:
 	helm install --namespace=vault --values=${DIR}/consul-values.yaml consul hashicorp/consul
+
+vault:
 	helm install --namespace=vault --values=${DIR}/vault-values.yaml vault hashicorp/vault
+
+install: consul vault
 
 init:
 	kubectl -n vault exec vault-0 -- vault operator init -key-shares=5 -key-threshold=3 -format=json | tee cluster-keys.json
