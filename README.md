@@ -5,6 +5,8 @@ Vault Playground
 
 [Download](https://releases.hashicorp.com/vault/1.4.2/vault_1.4.2_darwin_amd64.zip)
 
+[Linux](https://releases.hashicorp.com/vault/1.4.2/vault_1.4.2_linux_amd64.zip)
+
 # Vault on Consul
 
 [consul helm](https://github.com/hashicorp/consul-helm)
