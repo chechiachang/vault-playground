@@ -63,3 +63,17 @@ reader:
 
 login:
 	jq .auth.client_token key.json | xargs vault login
+
+root:
+	jq .root_token cluster-keys.json | xargs vault login
+
+# Versioning
+
+version:
+	vault kv enable-versioning kv-v1
+	vault secrets list -detailed
+
+# Warpping
+
+wrap:
+	vault token create -policy=reader -wrap-ttl=120
