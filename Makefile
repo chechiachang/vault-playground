@@ -4,24 +4,26 @@ VAULT_ADDR = http://127.0.0.1:8200
 dev:
 	vault server dev
 
+# Deploy
+
 # DIR=tekton make env
 env:
 	mkdir $(DIR)
 	cd $(DIR); wget -O consul-values.yaml https://raw.githubusercontent.com/hashicorp/consul-helm/master/values.yaml; wget -O vault-values.yaml https://raw.githubusercontent.com/hashicorp/vault-helm/master/values.yaml
 
 dry-run:
-	helm install --namespace=vault --values=${DIR}/consul-values.yaml --dry-run vault hashicorp/consul
+	#helm install --namespace=vault --values=${DIR}/consul-values.yaml --dry-run vault hashicorp/consul
 	helm install --namespace=vault --values=${DIR}/vault-values.yaml --dry-run vault hashicorp/vault
 
-consul:
-	helm install --namespace=vault --values=${DIR}/consul-values.yaml consul hashicorp/consul
+#consul:
+#	helm install --namespace=vault --values=${DIR}/consul-values.yaml consul hashicorp/consul
 
 vault:
 	helm install --namespace=vault --values=${DIR}/vault-values.yaml vault hashicorp/vault
 
 install: consul vault
 
-# Vault
+# Vault init
 
 init:
 	kubectl -n vault exec vault-0 -- vault operator init -key-shares=5 -key-threshold=3 -format=json | tee cluster-keys.json
@@ -35,3 +37,29 @@ unseal:
 			kubectl -n vault exec $$v -- vault operator unseal $$k; sleep 1;\
 		done \
 	done
+
+# Policy
+
+.PHONY: policy
+
+POLICIES:=$(shell ls policy)
+policy:
+	declare -a POLICIES=($(POLICIES)); \
+	for p in $${POLICIES[@]%.hcl}; do \
+		vault policy write $$p policy/$$p.hcl; sleep 1; \
+	done
+	vault policy list
+
+enable:
+	vault secrets enable -path="kv-v1" kv
+
+# Token
+
+user:
+	vault token create -period=1h -policy=kv-user -format=json | tee key.json
+
+reader:
+	vault token create -period=1h -policy=kv-reader -format=json | tee key.json
+
+login:
+	jq .auth.client_token key.json | xargs vault login

@@ -17,9 +17,9 @@ helm search repo hashicorp/consul
 
 wget -O consul-values.yaml https://raw.githubusercontent.com/hashicorp/consul-helm/master/values.yaml
 
-helm install --namespace=vault --values=${DIR}/consul-values.yaml --dry-run vault hashicorp/consul
+helm install --namespace=vault --values=deploy/singleton/consul-values.yaml --dry-run vault hashicorp/consul
 
-helm install --namespace=vault --values=${DIR}/consul-values.yaml consul hashicorp/consul
+helm install --namespace=vault --values=deploy/singleton/consul-values.yaml consul hashicorp/consul
 ```
 
 [vault helm](https://github.com/hashicorp/vault-helm)
@@ -32,9 +32,9 @@ helm search repo hashicorp/vault
 
 wget -O vault-values.yaml https://raw.githubusercontent.com/hashicorp/vault-helm/master/values.yaml
 
-helm install --namespace=vault --values=${DIR}/vault-values.yaml --dry-run vault hashicorp/vault
+helm install --namespace=vault --values=deploy/singleton/vault-values.yaml --dry-run vault hashicorp/vault
 
-helm install --namespace=vault --values=${DIR}/vault-values.yaml vault hashicorp/vault
+helm install --namespace=vault --values=deploy/singleton/vault-values.yaml vault hashicorp/vault
 ```
 
 ```
@@ -53,4 +53,71 @@ DIR=tekton make vault
 # Initialize
 
 ```
+make init
+make unseal
 ```
+
+# Access
+
+```
+export VAULT_ADDR='http://127.0.0.1:8200'
+vault status
+
+vault login
+```
+
+### Secret
+
+KV
+```
+vault secrets list
+
+vault secrets enable -path=kv kv
+vault kv put kv/hello target=world
+vault kv list kv/
+```
+
+### Token
+
+```
+vault token create -policy=default
+```
+
+### Auth
+
+```
+vault auth help github
+vault login -method=github token=""
+```
+
+### Policy
+
+```
+vault policy fmt my-policy.hcl
+```
+
+```
+vault policy write my-policy my-policy.hcl
+
+vault policy write my-policy -<<EOF
+# Dev servers have version 2 of KV secrets engine mounted by default, so will
+# need these paths to grant permissions:
+path "secret/data/*" {
+  capabilities = ["create", "update"]
+}
+
+path "secret/data/foo" {
+  capabilities = ["read"]
+}
+EOF
+
+vault policy read my-policy
+```
+
+Use policy
+```
+vault token create -policy=my-policy
+```
+
+### GCP secret engine
+
