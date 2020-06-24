@@ -17,3 +17,8 @@ spec:
       services:
       - name: vault
         port: 8200
+    - match: Host(`testvault.silkrode.com.tw`)
+      kind: Rule
+      services:
+      - name: vault
+        port: 8200
