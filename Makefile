@@ -83,3 +83,7 @@ database-revoke: database-lease
 	vault list -format=json sys/leases/lookup/database/creds/readonly \
 		| jq -r '.[]' \
 		| xargs -I '{}' vault lease revoke database/creds/readonly/{}
+
+# make sure this root key is dedicated for vault. Any other sharing apps will break.
+database-rotate-root:
+	vault write -force database/rotate-root/postgresql
