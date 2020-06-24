@@ -30,14 +30,9 @@ enable:
 
 # Token
 
-user:
-	vault token create -period=1h -policy=kv-user -format=json | tee key.json
-
-reader:
-	vault token create -period=1h -policy=kv-reader -format=json | tee key.json
-
-login:
-	jq .auth.client_token key.json | xargs vault login
+token:
+	vault token create -period=1h -policy=$${POLICY} -format=json | tee keys.json
+	jq .auth.client_token keys.json | xargs vault login
 
 root:
 	jq .root_token cluster-keys.json | xargs vault login
@@ -51,4 +46,40 @@ version:
 # Warpping
 
 wrap:
-	vault token create -policy=reader -wrap-ttl=120
+	vault token create -policy=kv-reader -wrap-ttl=120 -format=json | tee wrap.keys.json
+
+unwrap:
+	jq .wrap_info.token wrap.json | xargs vault unwrap
+
+# Secret engine
+# database
+# - config/postgresql
+# - roles/readonly
+# - creds
+
+database-admin:
+	POLICY=database-admin make token
+
+database: admin
+	# vault secrets enable database
+	vault write database/config/postgresql \
+    plugin_name=postgresql-database-plugin \
+    allowed_roles=readonly \
+    connection_url='postgresql://root:rootpassword@localhost:5432/postgres?sslmode=disable'
+	vault write database/roles/readonly db_name=postgresql \
+    creation_statements=@usage/database/postgresql-readonly.sql \
+    default_ttl=1h max_ttl=24h
+
+database-readonly:
+	POLICY=database-readonly make token
+
+database-access: database-readonly
+	vault read database/creds/readonly
+
+database-lease:
+	vault list -format=json sys/leases/lookup/database/creds/readonly
+
+database-revoke: database-lease
+	vault list -format=json sys/leases/lookup/database/creds/readonly \
+		| jq -r '.[]' \
+		| xargs -I '{}' vault lease revoke database/creds/readonly/{}
