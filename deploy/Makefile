@@ -1,5 +1,4 @@
 SHELL = /bin/bash
-VAULT_ADDR = http://127.0.0.1:8200
 
 dev:
 	vault server dev
@@ -21,4 +20,4 @@ dry-run:
 vault:
 	helm install --namespace=vault --values=${DIR}/vault-values.yaml vault hashicorp/vault
 
-install: consul vault
+install: vault
