@@ -1,4 +1,4 @@
 # Configure kubernetes
-path "secret/data/myapp/*" {
+path "myapp/*" {
     capabilities = ["read", "list"]
 }

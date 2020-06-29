@@ -13,6 +13,8 @@ spec:
         path: vault-agent-config.hcl
       name: vault-agent-config
     name: config
+  - emptyDir: {}
+    name: shared-data
 
   initContainers:
   - args:
@@ -35,3 +37,6 @@ spec:
     name: alpine
     command: ["sleep"]
     args: ["infinite"]
+    volumeMounts:
+    - mountPath: /etc/secrets
+      name: shared-data
