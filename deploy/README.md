@@ -1,6 +1,18 @@
 Deploy
 ===
 
+Choose one of the backend storages for vault
+- vault on postgresql
+- vault on consul key/value
+
+# Vault on PostgreSQL
+
+Update postgresql `connection_url`
+
+```
+DIR=tekton make vault
+```
+
 # Vault on Consul
 
 [consul helm](https://github.com/hashicorp/consul-helm)
@@ -15,6 +27,8 @@ helm install --namespace=vault --values=tekton/consul-values.yaml --dry-run vaul
 
 helm install --namespace=vault --values=tekton/consul-values.yaml consul hashicorp/consul
 ```
+
+# Install helm
 
 [vault helm](https://github.com/hashicorp/vault-helm)
 
@@ -34,12 +48,4 @@ helm install --namespace=vault --values=tekton/vault-values.yaml vault hashicorp
 ```
 DIR=tekton make dry-run
 DIR=tekton make install
-```
-
-# Vault on PostgreSQL
-
-Update postgresql `connection_url`
-
-```
-DIR=tekton make vault
 ```
