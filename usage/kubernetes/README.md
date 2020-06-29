@@ -65,7 +65,7 @@ kubectl run --generator=run-pod/v1 tmp --rm -i --tty \
       --serviceaccount=vault-auth --image alpine:3.7
 
 KUBE_TOKEN=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
-echo $KUBE_TOKEN
+VAULT_ROLE=kubernetes-ro
 
 curl --request POST \
      --data '{"jwt": "'"$KUBE_TOKEN"'", "role": "'"${VAULT_ROLE}"'"}' \
