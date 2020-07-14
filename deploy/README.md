@@ -49,3 +49,11 @@ helm install --namespace=vault --values=tekton/vault-values.yaml vault hashicorp
 DIR=tekton make dry-run
 DIR=tekton make install
 ```
+
+# Uninstall
+
+```
+helm -n vault delete vault
+```
+
+PostgreSQL delete database vault
