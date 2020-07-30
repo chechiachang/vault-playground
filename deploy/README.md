@@ -110,6 +110,14 @@ DIR=vault make dry-run
 DIR=vault make install
 ```
 
+### Ingress
+
+```
+kubectl apply -f deploy/vault/ingress.yaml
+```
+
+---
+
 # Uninstall
 
 ```
