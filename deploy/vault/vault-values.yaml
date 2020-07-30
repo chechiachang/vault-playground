@@ -238,10 +238,10 @@ server:
   # extraVolumes is a list of extra volumes to mount. These will be exposed
   # to Vault in the path `/vault/userconfig/<name>/`. The value below is
   # an array of objects, examples are shown below.
-  extraVolumes:
-    - type: secret
-      name: vault-backend
-      path: null # default is `/vault/userconfig`
+  extraVolumes: []
+    #- type: secret
+    #  name: vault-backend
+    #  path: null # default is `/vault/userconfig`
 
   # Affinity Settings
   # Commenting out or setting as empty the affinity variable, will allow
