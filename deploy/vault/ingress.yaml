@@ -1,0 +1,30 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: vault-server-ingress
+  namespace: vault
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    #kubernetes.io/ingress.class: nginx
+    #nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    #nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+spec:
+  rules:
+  - host: vault.silkrode.in
+    http:
+      paths:
+      - path: /ui
+        backend:
+          serviceName: vault-ui
+          servicePort: 8200
+      - path: /
+        backend:
+          serviceName: vault
+          servicePort: 8200
+  - host: vault.silkrode.com.tw
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: vault
+          servicePort: 8200

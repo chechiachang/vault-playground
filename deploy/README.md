@@ -31,8 +31,8 @@ hashicorp/vault	0.6.0        	1.4.2      	Official HashiCorp Vault Chart
 - Install
 
 ```
-GIT_VERSION=v6.0.0
-CHART_VERSION=v6.0.0
+GIT_VERSION=v0.6.0
+CHART_VERSION=0.6.0
 
 wget -O vault-values.yaml https://raw.githubusercontent.com/hashicorp/vault-helm/blob/${GIT_VERSION}/values.yaml
 

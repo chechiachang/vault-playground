@@ -91,12 +91,25 @@ injector:
   # Affinity Settings for injector pods
   # This should be a multi-line string matching the affinity section of a
   # PodSpec.
-  affinity: null
+  affinity: |
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 1
+          preference:
+            matchExpressions:
+              - key: cloud.google.com/gke-nodepool
+                operator: In
+                values:
+                  - preemptible
 
   # Toleration Settings for injector pods
   # This should be a multi-line string matching the Toleration array
   # in a PodSpec.
-  tolerations: null
+  tolerations: |
+    - key: "preemptible"
+      operator: "Equal"
+      value: "true"
+      effect: "PreferNoSchedule"
 
   # nodeSelector labels for injector pod assignment, formatted as a muli-line string.
   # ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector
@@ -242,11 +255,24 @@ server:
               app.kubernetes.io/instance: "{{ .Release.Name }}"
               component: server
           topologyKey: kubernetes.io/hostname
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 1
+          preference:
+            matchExpressions:
+              - key: cloud.google.com/gke-nodepool
+                operator: In
+                values:
+                  - preemptible
 
   # Toleration Settings for server pods
   # This should be a multi-line string matching the Toleration array
   # in a PodSpec.
-  tolerations: null
+  tolerations: |
+    - key: "preemptible"
+      operator: "Equal"
+      value: "true"
+      effect: "PreferNoSchedule"
 
   # nodeSelector labels for server pod assignment, formatted as a muli-line string.
   # ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector
