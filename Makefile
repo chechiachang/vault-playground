@@ -1,7 +1,7 @@
 
 TOKEN_DIR := tokens
 
-# Vault init
+# === Vault init ===
 
 init:
 	kubectl -n vault exec vault-0 -- vault operator init -key-shares=5 -key-threshold=3 -format=json | tee $(TOKEN_DIR)/cluster-keys.json
@@ -16,7 +16,7 @@ unseal:
 		done \
 	done
 
-# Policy
+# === Policy ===
 
 .PHONY: policy
 
@@ -28,8 +28,7 @@ policy:
 	done
 	vault policy list
 
-enable:
-	vault secrets enable -path="kv-v1" kv
+# === Usage ===
 
 # Token
 
@@ -39,6 +38,9 @@ token:
 
 root:
 	jq .root_token $(TOKEN_DIR)/cluster-keys.json | xargs vault login
+
+admin:
+	POLICY=admin make token
 
 # Versioning
 
@@ -55,6 +57,10 @@ unwrap:
 	jq .wrap_info.token $(TOKEN_DIR)/wrap.json | xargs vault unwrap
 
 # Secret engine
+
+enable:
+	vault secrets enable -path="kv-v1" kv
+
 # database
 # - config/postgresql
 # - roles/readonly
@@ -63,7 +69,7 @@ unwrap:
 database-admin:
 	POLICY=database-admin make token
 
-database: admin
+database: database-admin
 	# vault secrets enable database
 	vault write database/config/postgresql \
     plugin_name=postgresql-database-plugin \
