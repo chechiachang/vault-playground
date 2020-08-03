@@ -24,7 +24,21 @@ make unseal
 export VAULT_ADDR='http://127.0.0.1:8200'
 vault status
 
-vault login
+export VAULT_TOKEN=''
+# export VAULT_TOKEN to avoid login
+
+vault token lookup
+```
+
+### Policy
+
+Avoid using root token. Create an admin token to operate.
+```
+make policy
+vault token create -policy=admin -ttl=30m -format=json | tee tokens/admin.json
+export VAULT_TOKEN=$(cat tokens/admin.json | jq -r .auth.client_token)
+
+vault token lookup
 ```
 
 ### Secret
@@ -82,3 +96,12 @@ vault token create -policy=my-policy
 
 ### GCP secret engine
 
+---
+
+# Operation
+
+### Runs-on preemptible (Spot) Instance
+
+Pods will down with preemptible instances. New pod will be sealed when init. Require auto-unseal.
+
+- [ ] Auto-unseal
