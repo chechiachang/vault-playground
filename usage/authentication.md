@@ -1,5 +1,7 @@
 Authentication
-=== 
+===
+
+WIP: May not work properly.
 
 https://www.vaultproject.io/docs/concepts/auth
 
@@ -35,6 +37,9 @@ gcloud beta iam service-accounts sign-jwt \
     --iam-account=vault-auth@${PROJECT}.iam.gserviceaccount.com \
     --project=${PROJECT} \
     usage/input-jwt-claims.json output.jwt
+
+# WIP
+ERROR: (gcloud.alpha.iam.service-accounts.sign-jwt) PERMISSION_DENIED: Permission iam.serviceAccounts.signJwt is required to perform this operation on service account projects/-/serviceAccounts/vault-auth@${PROJECT}.iam.gserviceaccount.com.
 
 vault login -method=gcp \
     role="my-role" \
