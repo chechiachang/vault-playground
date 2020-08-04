@@ -116,6 +116,14 @@ DIR=vault make install
 kubectl apply -f deploy/vault/ingress.yaml
 ```
 
+### GCP KMS unseal key
+
+https://learn.hashicorp.com/vault/operations/autounseal-gcp-kms
+https://github.com/hashicorp/vault-guides/tree/master/operations/gcp-kms-unseal
+
+Service Account 
+- Cloud KMS CryptoKey Encrypter/Decrypter
+
 ---
 
 # Uninstall

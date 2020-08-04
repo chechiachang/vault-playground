@@ -125,6 +125,9 @@ server:
   # Resource requests, limits, etc. for the server cluster placement. This
   # should map directly to the value of the resources field for a PodSpec.
   # By default no direct resource request is made.
+  serviceaccount:
+    annotations:
+      iam.gke.io/gcp-service-account: 307194479120-compute@developer.gserviceaccount.com
 
   image:
     repository: "vault"
@@ -390,9 +393,9 @@ server:
       # that is authorized to access GCP KMS.
       #seal "gcpckms" {
       #   project     = "vault-helm-dev"
-      #   region      = "global"
-      #   key_ring    = "vault-helm-unseal-kr"
-      #   crypto_key  = "vault-helm-unseal-key"
+      #   region      = "asia-east1"
+      #   key_ring    = "vault-unseal-key"
+      #   crypto_key  = "vault-unseal-key"
       #}
 
   # Run Vault in "HA" mode. There are no storage requirements unless audit log
@@ -452,6 +455,12 @@ server:
         postgresql:
           connection_url: "postgres://user123:secret123!@localhost:5432/vault"
           ha_enabled: "true"
+      #seal:
+      #  gcpckms:
+      #    project: "dabenxiang226"
+      #    region: "asia-east1"
+      #    key_ring: "vault-unseal-key"
+      #    crypto_key: "vault-unseal-key"
       ui: "true"
     #config: |
     #  ui = true
@@ -476,9 +485,9 @@ server:
       # that is authorized to access GCP KMS.
       #seal "gcpckms" {
       #   project     = "vault-helm-dev-246514"
-      #   region      = "global"
-      #   key_ring    = "vault-helm-unseal-kr"
-      #   crypto_key  = "vault-helm-unseal-key"
+      #   region      = "asia-east1"
+      #   key_ring    = "vault-unseal-key"
+      #   crypto_key  = "vault-unseal-key"
       #}
 
     # A disruption budget limits the number of pods of a replicated application
