@@ -1,0 +1,4 @@
+{
+  "sub": "vault-auth@${PROJECT}.iam.gserviceaccount.com",
+  "aud": "vault/admin"
+}

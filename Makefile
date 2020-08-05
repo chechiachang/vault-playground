@@ -1,9 +1,12 @@
-# Vault init
+
+TOKEN_DIR := tokens
+
+# === Vault init ===
 
 init:
-	kubectl -n vault exec vault-0 -- vault operator init -key-shares=5 -key-threshold=3 -format=json | tee cluster-keys.json
+	kubectl -n vault exec vault-0 -- vault operator init -key-shares=5 -key-threshold=3 -format=json | tee $(TOKEN_DIR)/cluster-keys.json
 
-VAULT_UNSEAL_KEYS:=$(shell cat cluster-keys.json | jq -r ".unseal_keys_b64[]" | tr '\n' ' ')
+VAULT_UNSEAL_KEYS:=$(shell cat $(TOKEN_DIR)/cluster-keys.json | jq -r ".unseal_keys_b64[]" | tr '\n' ' ')
 # Use first 3 keys to unseal
 unseal:
 	declare -a VAULT_UNSEAL_KEYS=($(VAULT_UNSEAL_KEYS)); \
@@ -13,7 +16,7 @@ unseal:
 		done \
 	done
 
-# Policy
+# === Policy ===
 
 .PHONY: policy
 
@@ -25,17 +28,19 @@ policy:
 	done
 	vault policy list
 
-enable:
-	vault secrets enable -path="kv-v1" kv
+# === Usage ===
 
 # Token
 
 token:
-	vault token create -period=1h -policy=$${POLICY} -format=json | tee keys.json
-	jq .auth.client_token keys.json | xargs vault login
+	vault token create -period=1h -policy=$${POLICY} -format=json | tee $(TOKEN_DIR)/keys.json
+	jq .auth.client_token $(TOKEN_DIR)/keys.json | xargs vault login
 
 root:
-	jq .root_token cluster-keys.json | xargs vault login
+	jq .root_token $(TOKEN_DIR)/cluster-keys.json | xargs vault login
+
+admin:
+	POLICY=admin make token
 
 # Versioning
 
@@ -46,12 +51,16 @@ version:
 # Warpping
 
 wrap:
-	vault token create -policy=kv-reader -wrap-ttl=120 -format=json | tee wrap.keys.json
+	vault token create -policy=kv-reader -wrap-ttl=120 -format=json | tee $(TOKEN_DIR)/wrap.keys.json
 
 unwrap:
-	jq .wrap_info.token wrap.json | xargs vault unwrap
+	jq .wrap_info.token $(TOKEN_DIR)/wrap.json | xargs vault unwrap
 
 # Secret engine
+
+enable:
+	vault secrets enable -path="kv-v1" kv
+
 # database
 # - config/postgresql
 # - roles/readonly
@@ -60,7 +69,7 @@ unwrap:
 database-admin:
 	POLICY=database-admin make token
 
-database: admin
+database: database-admin
 	# vault secrets enable database
 	vault write database/config/postgresql \
     plugin_name=postgresql-database-plugin \

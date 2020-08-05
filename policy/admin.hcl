@@ -28,10 +28,22 @@ path "sys/policies/acl"
   capabilities = ["list"]
 }
 
+# List secrets
+path "secret"
+{
+  capabilities = ["read"]
+}
+
 # List, create, update, and delete key/value secrets
 path "secret/*"
 {
   capabilities = ["create", "read", "update", "delete", "list", "sudo"]
+}
+
+# List mounts
+path "sys/mounts"
+{
+  capabilities = ["read"]
 }
 
 # Create and manage secrets engines broadly across Vault.

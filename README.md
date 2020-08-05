@@ -11,20 +11,60 @@ Vault Playground
 
 [Check deploy](deploy)
 
-# Initialize
+---
+
+# Vault cluster admin operations
+
+### Initialize
 
 ```
 make init
 make unseal
 ```
 
-# Access
+### Policy
+
+Avoid using root token. Create an admin token to operate.
+```
+export VAULT_ADDR='http://127.0.0.1:8200'
+
+make policy
+vault token create -policy=admin -ttl=30m -format=json | tee tokens/admin.json
+export VAULT_TOKEN=$(cat tokens/admin.json | jq -r .auth.client_token)
+
+vault token lookup
+```
+
+### Access (with env)
+
+- avoid use root token
+- export `VAULT_TOKEN` to avoid login
+
+```
+export VAULT_TOKEN=''
+
+vault token lookup
+```
+
+### Access with login
+
+Root switch to admin token
+- create token with policy
+- vault login
+
+```
+POLICY=admin make token
+vault token lookup
+```
+
+---
+
+# Vault user usage
+
+- avoid use root token
 
 ```
 export VAULT_ADDR='http://127.0.0.1:8200'
-vault status
-
-vault login
 ```
 
 ### Secret
@@ -82,3 +122,19 @@ vault token create -policy=my-policy
 
 ### GCP secret engine
 
+---
+
+# Operation
+
+### Runs-on preemptible (Spot) Instance
+
+Pods will down with preemptible instances. New pod will be sealed when init. Require auto-unseal.
+
+TODO
+
+- [ ] Auto-unseal
+
+Work around: unseal -> login root -> create admin -> login admin
+```
+make unseal root admin
+```
