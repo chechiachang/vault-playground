@@ -2,7 +2,7 @@ Deploy
 ===
 
 Choose one of the backend storages for vault
-- vault on postgresql (This readme)
+- vault HA on postgresql (This readme)
 - [vault on Consul key/value](consul.md)
 
 # Vault on PostgreSQL
@@ -98,22 +98,24 @@ hashicorp/vault	0.6.0        	1.4.2      	Official HashiCorp Vault Chart
 GIT_VERSION=v0.6.0
 CHART_VERSION=0.6.0
 
+cd ha
+
 wget -O vault-values.yaml https://raw.githubusercontent.com/hashicorp/vault-helm/blob/${GIT_VERSION}/values.yaml
 
-helm install --namespace=vault --values=vault/vault-values.yaml --version ${CHART_VERSION} --dry-run vault hashicorp/vault
+helm install --namespace=vault --values=vault-values.yaml --version ${CHART_VERSION} --dry-run vault hashicorp/vault
 
-helm install --namespace=vault --values=vault/vault-values.yaml --version ${CHART_VERSION} vault hashicorp/vault
+helm install --namespace=vault --values=vault-values.yaml --version ${CHART_VERSION} vault hashicorp/vault
 ```
 
 ```
-DIR=vault make dry-run
-DIR=vault make install
+DIR=ha make dry-run
+DIR=ha make install
 ```
 
 ### Ingress
 
 ```
-kubectl apply -f deploy/vault/ingress.yaml
+kubectl apply -f deploy/ha/ingress.yaml
 ```
 
 ### GCP KMS unseal key
