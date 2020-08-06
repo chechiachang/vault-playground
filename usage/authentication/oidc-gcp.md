@@ -24,9 +24,9 @@ GCP OIDC
 ```
 vault auth enable oidc
 
-CLIENT_ID=307194479120-sl1tuse85mjaigp8blfjs3744clmlrmn.apps.googleusercontent.com
+CLIENT_ID=
 
-CLIENT_SECRET=Xsi-lXl7asliUZhyFm-teoV5
+CLIENT_SECRET=
 
 vault write auth/oidc/config \
   oidc_discovery_url="https://accounts.google.com" \

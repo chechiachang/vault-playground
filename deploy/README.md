@@ -124,7 +124,48 @@ https://learn.hashicorp.com/vault/operations/autounseal-gcp-kms
 https://github.com/hashicorp/vault-guides/tree/master/operations/gcp-kms-unseal
 
 Service Account 
-- Cloud KMS CryptoKey Encrypter/Decrypter
+- Add servivce account, vault-kms-unseal, with roles/cloudkms.cryptoKeyEncrypterDecrypter
+- Add secret key to GKE following [GCP official doc](https://cloud.google.com/kubernetes-engine/docs/tutorials/authenticating-to-cloud-platform)
+- Add volume & env to assign google application credentials to pod
+
+```
+kubectl create secret generic vault-kms-key \
+  -n vault \
+  --from-file=vault-kms-key.json=/Users/david/workspace/credentials/PATH-TO-KEY-FILE.json
+
+kubectl get secrets -n vault
+```
+
+Edit helm values
+```
+  extraEnvironmentVars:
+    GOOGLE_APPLICATION_CREDENTIALS: /vault/userconfig/vault-kms-key/vault-kms-key.json
+
+  extraVolumes:
+    - type: secret
+      name: vault-kms-key
+      path: /vault/userconfig
+
+      # End up mount /vault/userconfig/vault-kms-key/vault-kms-key.json
+```
+
+Upgrade helm
+
+```
+[INFO]  core: stored unseal keys supported, attempting fetch
+[WARN]  failed to unseal core: error="stored unseal keys are supported, but none were found"
+[INFO]  core.autoseal: seal configuration missing, but cannot check old path as core is sealed: seal_type=recovery
+
+make init
+
+2020-08-06T02:50:09.301Z [INFO]  core: post-unseal setup complete
+2020-08-06T02:50:10.062Z [WARN]  core: attempted unseal with stored keys, but vault is already unsealed
+```
+
+Check KMS key
+```
+gcloud kms keys list --location asia-east1 --keyring projects/${PROJECT}/locations/${LOCATION}/keyRings/vault-unseal-key
+```
 
 ---
 

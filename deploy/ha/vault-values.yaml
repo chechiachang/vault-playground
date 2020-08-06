@@ -125,9 +125,6 @@ server:
   # Resource requests, limits, etc. for the server cluster placement. This
   # should map directly to the value of the resources field for a PodSpec.
   # By default no direct resource request is made.
-  serviceaccount:
-    annotations:
-      iam.gke.io/gcp-service-account: 307194479120-compute@developer.gserviceaccount.com
 
   image:
     repository: "vault"
@@ -226,10 +223,10 @@ server:
 
   # extraEnvironmentVars is a list of extra enviroment variables to set with the stateful set. These could be
   # used to include variables required for auto-unseal.
-  extraEnvironmentVars: {}
+  extraEnvironmentVars:
     # GOOGLE_REGION: global
     # GOOGLE_PROJECT: myproject
-    # GOOGLE_APPLICATION_CREDENTIALS: /vault/userconfig/myproject/myproject-creds.json
+    GOOGLE_APPLICATION_CREDENTIALS: /vault/userconfig/vault-kms-key/vault-kms-key.json
 
   # extraSecretEnvironmentVars is a list of extra enviroment variables to set with the stateful set.
   # These variables take value from existing Secret objects.
@@ -241,10 +238,11 @@ server:
   # extraVolumes is a list of extra volumes to mount. These will be exposed
   # to Vault in the path `/vault/userconfig/<name>/`. The value below is
   # an array of objects, examples are shown below.
-  extraVolumes: []
-    #- type: secret
-    #  name: vault-backend
-    #  path: null # default is `/vault/userconfig`
+  extraVolumes:
+    - type: secret
+      name: vault-kms-key
+      path: /vault/userconfig
+      #path: null # default is `/vault/userconfig`
 
   # Affinity Settings
   # Commenting out or setting as empty the affinity variable, will allow
@@ -455,12 +453,12 @@ server:
         postgresql:
           connection_url: "postgres://user123:secret123!@localhost:5432/vault"
           ha_enabled: "true"
-      #seal:
-      #  gcpckms:
-      #    project: "dabenxiang226"
-      #    region: "asia-east1"
-      #    key_ring: "vault-unseal-key"
-      #    crypto_key: "vault-unseal-key"
+      seal:
+        gcpckms:
+          project: "dabenxiang226"
+          region: "asia-east1"
+          key_ring: "vault-unseal-key"
+          crypto_key: "vault-unseal-key"
       ui: "true"
     #config: |
     #  ui = true

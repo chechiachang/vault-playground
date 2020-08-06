@@ -20,6 +20,7 @@ unseal:
 
 .PHONY: policy
 
+# Apply all policies
 POLICIES:=$(shell ls policy)
 policy:
 	declare -a POLICIES=($(POLICIES)); \
