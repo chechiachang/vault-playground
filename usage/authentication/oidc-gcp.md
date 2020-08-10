@@ -13,7 +13,7 @@ GCP OIDC
 
 1. Visit the Google API Console.
 1. Create or a select a project.
-1. Create a new credential via Credentials > Create Credentials > OAuth Client ID.
+1. Create a new credential via IAM Service Account Credential API > Credentials > Create Credentials > OAuth Client ID.
 1. Configure the OAuth Consent Screen. Application Name is required. Save.
 1. Select application type: "Web Application".
 1. Configure Authorized Redirect URIs. ex. https://${DOMAIN}/ui/vault/auth/oidc/oidc/callback
@@ -37,7 +37,7 @@ vault write auth/oidc/config \
 vault write auth/oidc/role/gmail \
   user_claim="sub" \
   bound_audiences=${CLIENT_ID} \
-  allowed_redirect_uris=http://vault.silkrode.in/ui/vault/auth/oidc/oidc/callback \
+  allowed_redirect_uris=https://vault.silkrode.in/ui/vault/auth/oidc/oidc/callback \
   policies=default \
   ttl=1h
 ```
