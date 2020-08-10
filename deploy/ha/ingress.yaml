@@ -5,10 +5,20 @@ metadata:
   namespace: vault
   annotations:
     kubernetes.io/ingress.class: traefik
+    # https://docs.traefik.io/routing/providers/kubernetes-ingress/
+    traefik.ingress.kubernetes.io/router.tls: "true"
     #kubernetes.io/ingress.class: nginx
     #nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
     #nginx.ingress.kubernetes.io/ssl-passthrough: "true"
 spec:
+  # https://docs.traefik.io/v1.7/user-guide/kubernetes/#add-a-tls-certificate-to-the-ingress
+  tls:
+  - secretName: silkrode-in-certificate
+    hosts:
+      - vault.silkrode.in
+  - secretName: gcp-silkrode-com-tw-certificate
+    hosts:
+      - vault.gcp.silkrode.com.tw
   rules:
   - host: vault.silkrode.in
     http:
@@ -21,7 +31,7 @@ spec:
         backend:
           serviceName: vault
           servicePort: 8200
-  - host: vault.silkrode.com.tw
+  - host: vault.gcp.silkrode.com.tw
     http:
       paths:
       - path: /
