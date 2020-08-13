@@ -13,10 +13,11 @@ metadata:
 spec:
   # https://docs.traefik.io/v1.7/user-guide/kubernetes/#add-a-tls-certificate-to-the-ingress
   tls:
-  - secretName: silkrode-in-certificate
+  #- secretName: silkrode-in-tls # Works!
+  - secretName: silkrode-in-tls-2
     hosts:
       - vault.silkrode.in
-  - secretName: gcp-silkrode-com-tw-certificate
+  - secretName: gcp-silkrode-com-tw-tls-1
     hosts:
       - vault.gcp.silkrode.com.tw
   rules:
