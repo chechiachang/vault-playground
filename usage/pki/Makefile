@@ -58,3 +58,4 @@ certificate:
 	vault write -format=json $(INTER_ENDPOINT)/issue/$(ISSUE_NAME) \
 		common_name=$(DOMAIN) ttl=24h \
     | jq -r '.data.certificate' > certs/$(DOMAIN)/tls.crt
+	# TODO also expose private key when generated
