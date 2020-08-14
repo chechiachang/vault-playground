@@ -1,24 +1,28 @@
+# https://docs.traefik.io/routing/providers/kubernetes-crd/#kind-ingressroutetcp
 apiVersion: traefik.containo.us/v1alpha1
-kind: IngressRoute
+kind: IngressRouteTCP
 metadata:
-  name: vault
+  name: vault-tcp
   namespace: vault
 spec:
   entryPoints:
     - web
+    - websecure
   routes:
-    - match: Host(`vault.silkrode.in`) && Path(`/ui`)
+    - match: HostSNI(`vault.silkrode.in/ui`) #&& Path(`/ui`)
       kind: Rule
       services:
       - name: vault-ui
         port: 8200
-    - match: Host(`vault.silkrode.in`)
+    - match: HostSNI(`vault.silkrode.in`)
       kind: Rule
       services:
       - name: vault
         port: 8200
-    - match: Host(`testvault.silkrode.com.tw`)
+    - match: HostSNI(`vault.gcp.silkrode.com.tw`)
       kind: Rule
       services:
       - name: vault
         port: 8200
+  tls:
+    passthrough: true

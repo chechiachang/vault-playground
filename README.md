@@ -41,7 +41,8 @@ vault token lookup
 - export `VAULT_TOKEN` to avoid login
 
 ```
-export VAULT_TOKEN=''
+export VAULT_TOKEN='s.my-token'
+export VAULT_CACERT='my-ca.crt' # Required for tls certificate self-signed with ca"
 
 vault token lookup
 ```

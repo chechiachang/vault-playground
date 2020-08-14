@@ -38,7 +38,7 @@ token:
 	jq .auth.client_token $(TOKEN_DIR)/keys.json | xargs vault login
 
 root:
-	jq .root_token $(TOKEN_DIR)/cluster-keys.json | xargs vault login
+	jq .root_token $(TOKEN_DIR)/cluster-keys.json | xargs vault login -ca-cert=
 
 admin:
 	POLICY=admin make token

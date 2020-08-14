@@ -9,7 +9,7 @@ global:
   # imagePullSecrets:
   #   - name: image-pull-secret
   # TLS for end-to-end encrypted transport
-  tlsDisable: true
+  tlsDisable: false
   # Beta Feature: If deploying to OpenShift
   openshift: false
 
@@ -61,12 +61,13 @@ injector:
     # private key to serve the injector webhook. If this is null, then the
     # injector will default to its automatic management mode that will assign
     # a service account to the injector to generate its own certificates.
-    secretName: null
+    secretName: silkrode-in-tls-2
 
     # caBundle is a base64-encoded PEM-encoded certificate bundle for the
     # CA that signed the TLS certificate that the webhook serves. This must
     # be set if secretName is non-null.
-    caBundle: ""
+    #caBundle: ""
+    caBundle: tls.crt
 
     # certName and keyName are the names of the files within the secret for
     # the TLS cert and private key, respectively. These have reasonable
@@ -243,6 +244,10 @@ server:
       name: vault-kms-key
       path: /vault/userconfig
       #path: null # default is `/vault/userconfig`
+    - type: secret
+      name: silkrode-in-tls-2
+      path: /vault/userconfig
+      #path: null # default is `/vault/userconfig` -> /vault/userconfig/silkrode-in-tls-2/tls.crt
 
   # Affinity Settings
   # Commenting out or setting as empty the affinity variable, will allow
@@ -378,7 +383,7 @@ server:
       ui = true
 
       listener "tcp" {
-        tls_disable = 1
+        tls_disable = 0
         address = "[::]:8200"
         cluster_address = "[::]:8201"
       }
@@ -424,7 +429,7 @@ server:
         ui = true
 
         listener "tcp" {
-          tls_disable = 1
+          tls_disable = 0
           address = "[::]:8200"
           cluster_address = "[::]:8201"
         }
@@ -448,7 +453,10 @@ server:
         tcp:
           address: "[::]:8200"
           cluster_address: "[::]:8201"
-          tls_disable: 1
+          # TLS
+          tls_disable: 0
+          tls_cert_file: /vault/userconfig/silkrode-in-tls-2/tls.crt
+          tls_key_file: /vault/userconfig/silkrode-in-tls-2/tls.key
       storage:
         postgresql:
           connection_url: "postgres://user123:secret123!@localhost:5432/vault"
@@ -464,7 +472,7 @@ server:
     #  ui = true
 
     #  listener "tcp" {
-    #    tls_disable = 1
+    #    tls_disable = 0
     #    address = "[::]:8200"
     #    cluster_address = "[::]:8201"
     #  }
