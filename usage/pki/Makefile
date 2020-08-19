@@ -1,4 +1,4 @@
-
+SHELL := /bin/bash
 .PHONY: ca
 
 CA_COMMON_NAME := "Chechia.net Root CA"
@@ -39,7 +39,7 @@ intermediate:
 	vault write $(INTER_ENDPOINT)/intermediate/set-signed \
 		certificate=@certs/intermediate/intermediate.cert.pem
 
-.PHONY: role
+.PHONY: role certificate
 
 ROLE_NAME := "chechia-net"
 ALLOWED_DOMAINS := "chechia.net"
@@ -53,9 +53,18 @@ role:
 ISSUE_NAME := "chechia-net"
 DOMAIN := "test.chechia.net"
 certificate:
-	# Create issue
+	# Create issue. Private key only show when generated
 	mkdir -p certs/$(DOMAIN)
 	vault write -format=json $(INTER_ENDPOINT)/issue/$(ISSUE_NAME) \
 		common_name=$(DOMAIN) ttl=24h \
-    | jq -r '.data.certificate' > certs/$(DOMAIN)/tls.crt
-	# TODO also expose private key when generated
+    | tee certs/$(DOMAIN)/tls.json
+	cat certs/$(DOMAIN)/tls.json | jq -r '.data.certificate' > certs/$(DOMAIN)/tls.crt
+	cat certs/$(DOMAIN)/tls.json | jq -r '.data.private_key' > certs/$(DOMAIN)/tls.key
+	cat certs/$(DOMAIN)/tls.json | jq -r '.data.ca_chain[0]' > certs/$(DOMAIN)/ca_chain.crt
+	cat certs/$(DOMAIN)/tls.json | jq -r '.data.issuing_ca' > certs/$(DOMAIN)/ca.crt
+
+revoke:
+	vault write $(INTER_ENDPOINT)/revoke serial_number=""
+
+remove:
+	vault write $(INTER_ENDPOINT)/tidy tidy_cert_store=true tidy_revoked_certs=true
