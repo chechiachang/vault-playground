@@ -121,8 +121,6 @@ Use policy
 vault token create -policy=my-policy
 ```
 
-### GCP secret engine
-
 ---
 
 # Operation
@@ -130,10 +128,6 @@ vault token create -policy=my-policy
 ### Runs-on preemptible (Spot) Instance
 
 Pods will down with preemptible instances. New pod will be sealed when init. Require auto-unseal.
-
-TODO
-
-- [ ] Auto-unseal
 
 Work around: unseal -> login root -> create admin -> login admin
 ```

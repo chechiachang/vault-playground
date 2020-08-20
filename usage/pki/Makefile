@@ -1,5 +1,7 @@
 SHELL := /bin/bash
-.PHONY: ca
+.PHONY: all ca
+
+all: ca intermediate role certificate
 
 CA_COMMON_NAME := "Chechia.net Root CA"
 ROOT_ENDPOINT := "pki-ca"
