@@ -1,3 +1,4 @@
+# A vault client deployment
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -20,6 +21,6 @@ spec:
           image: vault:1.4.2
           env:
             - name: VAULT_ADDR
-              value: "http://testvault.silkrode.com.tw"
+              value: "http://vault.chechia.net"
           command: ["sleep"]
           args: ["infinite"]

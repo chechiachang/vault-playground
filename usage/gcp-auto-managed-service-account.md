@@ -1,5 +1,7 @@
-GGP
+GCP Service Accoutn
 ===
+
+Read GCP token / service acount key from vault to interact with GCP API.
 
 https://www.vaultproject.io/docs/secrets/gcp
 
