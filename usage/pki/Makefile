@@ -50,7 +50,7 @@ role:
 	vault write $(INTER_ENDPOINT)/roles/$(ROLE_NAME) \
     allowed_domains=$(ALLOWED_DOMAINS) \
     allow_subdomains=true \
-    max_ttl=720h
+    max_ttl=8760h
 
 ISSUE_NAME := "chechia-net"
 DOMAIN := "test.chechia.net"
@@ -58,7 +58,7 @@ certificate:
 	# Create issue. Private key only show when generated
 	mkdir -p certs/$(DOMAIN)
 	vault write -format=json $(INTER_ENDPOINT)/issue/$(ISSUE_NAME) \
-		common_name=$(DOMAIN) ttl=24h \
+		common_name=$(DOMAIN) ttl=8760h \
     | tee certs/$(DOMAIN)/tls.json
 	cat certs/$(DOMAIN)/tls.json | jq -r '.data.certificate' > certs/$(DOMAIN)/tls.crt
 	cat certs/$(DOMAIN)/tls.json | jq -r '.data.private_key' > certs/$(DOMAIN)/tls.key
