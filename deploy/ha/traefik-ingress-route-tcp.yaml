@@ -9,17 +9,17 @@ spec:
     - web
     - websecure
   routes:
-    - match: HostSNI(`vault.silkrode.in/ui`) #&& Path(`/ui`)
+    - match: HostSNI(`vault.chechia.in/ui`) #&& Path(`/ui`)
       kind: Rule
       services:
       - name: vault-ui
         port: 8200
-    - match: HostSNI(`vault.silkrode.in`)
+    - match: HostSNI(`vault.chechia.in`)
       kind: Rule
       services:
       - name: vault
         port: 8200
-    - match: HostSNI(`vault.gcp.silkrode.com.tw`)
+    - match: HostSNI(`vault.gcp.chechia.net`)
       kind: Rule
       services:
       - name: vault

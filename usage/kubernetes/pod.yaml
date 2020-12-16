@@ -23,7 +23,7 @@ spec:
     - -log-level=debug
     env:
     - name: VAULT_ADDR
-      value: http://testvault.silkrode.com.tw
+      value: http://vault.chechia.net
     image: vault
     name: vault-agent
     volumeMounts:

@@ -61,7 +61,7 @@ injector:
     # private key to serve the injector webhook. If this is null, then the
     # injector will default to its automatic management mode that will assign
     # a service account to the injector to generate its own certificates.
-    secretName: silkrode-in-tls-2
+    secretName: chechia-in-tls-2
 
     # caBundle is a base64-encoded PEM-encoded certificate bundle for the
     # CA that signed the TLS certificate that the webhook serves. This must
@@ -245,9 +245,9 @@ server:
       path: /vault/userconfig
       #path: null # default is `/vault/userconfig`
     - type: secret
-      name: silkrode-in-tls-2
+      name: chechia-in-tls-2
       path: /vault/userconfig
-      #path: null # default is `/vault/userconfig` -> /vault/userconfig/silkrode-in-tls-2/tls.crt
+      #path: null # default is `/vault/userconfig` -> /vault/userconfig/chechia-in-tls-2/tls.crt
 
   # Affinity Settings
   # Commenting out or setting as empty the affinity variable, will allow
@@ -455,8 +455,8 @@ server:
           cluster_address: "[::]:8201"
           # TLS
           tls_disable: 0
-          tls_cert_file: /vault/userconfig/silkrode-in-tls-2/tls.crt
-          tls_key_file: /vault/userconfig/silkrode-in-tls-2/tls.key
+          tls_cert_file: /vault/userconfig/chechia-in-tls-2/tls.crt
+          tls_key_file: /vault/userconfig/chechia-in-tls-2/tls.key
       storage:
         postgresql:
           connection_url: "postgres://user123:secret123!@localhost:5432/vault"

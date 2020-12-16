@@ -37,7 +37,7 @@ vault write auth/oidc/config \
 vault write auth/oidc/role/gmail \
   user_claim="sub" \
   bound_audiences=${CLIENT_ID} \
-  allowed_redirect_uris=https://vault.silkrode.in/ui/vault/auth/oidc/oidc/callback \
+  allowed_redirect_uris=https://vault.chechia.in/ui/vault/auth/oidc/oidc/callback \
   policies=default \
   ttl=1h
 ```

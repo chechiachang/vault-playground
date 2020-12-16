@@ -13,15 +13,14 @@ metadata:
 spec:
   # https://docs.traefik.io/v1.7/user-guide/kubernetes/#add-a-tls-certificate-to-the-ingress
   tls:
-  #- secretName: silkrode-in-tls # Works!
-  - secretName: silkrode-in-tls-2
+  - secretName: chechia-in-tls
     hosts:
-      - vault.silkrode.in
-  - secretName: gcp-silkrode-com-tw-tls-1
+      - vault.chechia.in
+  - secretName: gcp-chechia-com-tw-tls
     hosts:
-      - vault.gcp.silkrode.com.tw
+      - vault.gcp.chechia.net
   rules:
-  - host: vault.silkrode.in
+  - host: vault.chechia.in
     http:
       paths:
       - path: /ui
@@ -32,7 +31,7 @@ spec:
         backend:
           serviceName: vault
           servicePort: 8200
-  - host: vault.gcp.silkrode.com.tw
+  - host: vault.gcp.chechia.net
     http:
       paths:
       - path: /

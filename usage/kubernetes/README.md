@@ -69,7 +69,7 @@ VAULT_ROLE=kubernetes-ro
 
 curl --request POST \
      --data '{"jwt": "'"$KUBE_TOKEN"'", "role": "'"${VAULT_ROLE}"'"}' \
-      http://testvault.silkrode.com.tw/v1/auth/kubernetes/login | tee vault-key.json
+      http://vault.chechia.net/v1/auth/kubernetes/login | tee vault-key.json
 ```
 
 # Auto auth
