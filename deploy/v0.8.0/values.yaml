@@ -461,7 +461,7 @@ server:
   # Helm project by default.  It is possible to manually configure Vault to use a
   # different HA backend.
   ha:
-    enabled: false
+    enabled: true
     replicas: 3
 
     # Set the api_addr configuration for Vault HA
@@ -515,9 +515,13 @@ server:
         address = "[::]:8200"
         cluster_address = "[::]:8201"
       }
-      storage "consul" {
-        path = "vault"
-        address = "HOST_IP:8500"
+      #storage "consul" {
+      #  path = "vault"
+      #  address = "HOST_IP:8500"
+      #}
+      storage "postgresql" {
+        connection_url = "postgres://user123:secret123!@localhost:5432/vault"
+        ha_enabled = true
       }
 
       service_registration "kubernetes" {}
@@ -569,7 +573,7 @@ ui:
   # serviceType can be used to control the type of service created. For
   # example, setting this to "LoadBalancer" will create an external load
   # balancer (for supported K8S installations) to access the UI.
-  enabled: false
+  enabled: true
   publishNotReadyAddresses: true
   # The service should only contain selectors for active Vault pod
   activeVaultPodOnly: false

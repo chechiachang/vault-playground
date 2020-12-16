@@ -1,6 +1,13 @@
 Deploy
 ===
 
+# Prerequisite
+
+Choose your backend
+- https://www.vaultproject.io/docs/configuration/storage/postgresql
+
+# Deploy
+
 Version
 - chart: v0.8.0
 - vault: v1.5.4
@@ -17,3 +24,6 @@ helm install vault hashicorp/vault \
     --f values.yml \
     --dry-run
 ```
+
+# Init
+
