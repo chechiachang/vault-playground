@@ -69,3 +69,11 @@ for v in ${VAULTS[@]}; do
   done
 done
 ```
+
+```
+kubectl get po -n vault
+NAME                                    READY   STATUS    RESTARTS   AGE
+vault-0                                 1/1     Running   0          11m
+vault-1                                 1/1     Running   0          11m
+vault-2                                 1/1     Running   0          10m
+```
