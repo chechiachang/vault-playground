@@ -1,3 +1,4 @@
+# https://raw.githubusercontent.com/hashicorp/consul-helm/blob/v0.6.0/values.yaml
 # Available parameters and their default values for the Consul chart.
 
 # global holds values that affect multiple components of the chart.
