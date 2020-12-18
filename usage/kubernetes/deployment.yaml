@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: &name vault-user
-  namespace: vault
+  namespace: chechia
   labels:
     app: *name
 spec:
@@ -16,11 +16,13 @@ spec:
       labels:
         name: *name
     spec:
+      serviceAccountName: chechia
+      automountServiceAccountToken: true
       containers:
         - name: *name
-          image: vault:1.4.2
+          image: vault:1.5.4
           env:
             - name: VAULT_ADDR
-              value: "http://vault.chechia.net"
+              value: "http://vault.vault.svc.cluster.local:8200"
           command: ["sleep"]
-          args: ["infinite"]
+          args: ["36000"]

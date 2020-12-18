@@ -9,5 +9,5 @@ roleRef:
   name: system:auth-delegator
 subjects:
 - kind: ServiceAccount
-  name: vault-auth
-  namespace: default
+  name: chechia
+  namespace: chechia
