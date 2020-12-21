@@ -1,0 +1,65 @@
+#!/bin/bash
+# Import secrets from file to vault
+# a/b/c/KEY VALUE -> a/b/c KEY
+# WARNING: Overwriting existing secrets. Double check before each run.
+
+set -e
+
+usage="$(basename "$0") -- script to export secrets from vault to files
+
+where:
+    -i|--input   input file
+
+example:
+    ./import-vault-kv -i input
+"
+
+# parse options
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    -i|--input)
+      INPUT=$2
+      shift; shift # past argument and value
+      ;;
+    *)
+      echo "unknown argument $1 $2" >&2
+      echo "${usage}" >&2
+      exit 1
+      ;;
+  esac
+done
+
+# Check parameters
+if [[ -z ${INPUT} ]]; then
+  echo "Require explicitly assign input file path."
+  echo "${usage}" >&2
+  exit 1
+fi
+
+# Check VAULT envs
+env | grep VAULT
+
+# Read input file and write to vaul
+echo "[DEBUG] reading input file ${INPUT}"
+while IFS= read -r line; do
+  echo "[DEBUG] read ${line}"
+  declare -a words=(${line})
+
+  # If has key and value(s)
+  if [[ ${#words[@]} > 1 ]]; then
+    path=${words[0]}
+    echo "[DEBUG] writing ${path} ${words[@]:1}"
+    echo ${words[@]:1} > temp_json
+    vault write ${path} @temp_json
+
+  # Exit if is not enough key value
+  else
+    echo ${#words[@]}
+    echo "[ERROR] read not key-value line ${words[@]}. Exiting"
+    exit 1
+  fi
+done < "${INPUT}"
+echo "[DEBUG] end of file"
+
+# WARNING: must clean up credentials
+rm temp_json

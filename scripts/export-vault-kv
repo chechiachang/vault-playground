@@ -1,0 +1,69 @@
+#!/bin/bash
+# Export secrets to files
+# a/b/c KEY -> a/b/c/KEY VALUE_JSON
+# WARNING: output file contains secrets. Make sure to remove it.
+
+set -e
+
+usage="$(basename "$0") -- script to export secrets from vault to files 
+
+where:
+    -p|--path     vault path
+    -o|--output   output file path
+
+example:
+    ./export-vault-kv -o output -p dev/max
+"
+
+# parse options
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    -p|--path)
+      VAULT_PATH=$2
+      shift; shift # past argument and value
+      ;;
+    -o|--output)
+      OUTPUT=$2
+      shift; shift # past argument and value
+      ;;
+    *)
+      echo "unknown argument $1 $2" >&2
+      echo "${usage}" >&2
+      exit 1
+      ;;
+  esac
+done
+
+# Provide defaults
+if [[ -z ${OUTPUT} ]]; then
+  OUTPUT=output
+fi
+
+# Check VAULT envs
+env | grep VAULT
+
+# find_leaf find secret nodes in path recursively
+function find_leaf() {
+  local path=${1%/} # remove tailing '/' if match
+  echo "[DEBUG] Finding ${path}"
+
+  declare -a childs=(`vault list -format=json ${path} | jq -r '.[]'`)
+  for child in ${childs[@]}; do
+
+    # If a child has '/', means it has grandchildren
+    if [[ ${child} == *'/' ]];then
+      find_leaf ${path}/${child}
+
+    # If a child has no '/', means it is a KEY
+    else
+      echo "[DEBUG] Reading ${path}/${child}"
+      value=$(vault read -format=json ${path}/${child} | jq -cr '.data')
+      if [[ ${value} != 'No value found at'* ]]; then
+        echo "[DEBUG] Exporting ${path}/${child} ${value}"
+        echo "${path}/${child} ${value}" | tee -a ${OUTPUT}
+      fi
+    fi
+  done
+}
+
+find_leaf ${VAULT_PATH}
