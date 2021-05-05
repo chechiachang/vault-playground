@@ -18,6 +18,14 @@ example:
 # parse options
 while [[ $# -gt 0 ]]; do
   case $1 in
+    -A|--all)
+      ALL_PATH="true"
+      shift
+      ;;
+    -S|--show-value)
+      SHOW_VALUE="true"
+      shift
+      ;;
     -p|--path)
       VAULT_PATH=$2
       shift; shift # past argument and value
@@ -58,12 +66,33 @@ function find_leaf() {
     else
       echo "[DEBUG] Reading ${path}/${child}"
       value=$(vault read -format=json ${path}/${child} | jq -cr '.data')
+
       if [[ ${value} != 'No value found at'* ]]; then
-        echo "[DEBUG] Exporting ${path}/${child} ${value}"
-        echo "${path}/${child} ${value}" | tee -a ${OUTPUT}
-      fi
-    fi
+        #echo "[DEBUG] Exporting ${path}/${child} ${value}"
+
+        # echo value if SHOW_VALUE
+        if [[ ${SHOW_VALUE} == "true" ]]; then
+          echo "${path}/${child} ${value}" | tee -a ${OUTPUT}
+        else
+          echo "${path}/${child}" | tee -a ${OUTPUT}
+        fi # ${SHOW_VALUE}
+
+      fi # ${value}
+
+    fi # ${child}
   done
 }
 
-find_leaf ${VAULT_PATH}
+# Export all path
+if [[ ${ALL_PATH} == "true" ]]; then
+
+  declare -a paths=($(vault secrets list -format json | jq 'keys' | jq -r '.[]'))
+  echo "[DEBUG] exporting paths: ${paths[@]}"
+  for p in ${paths[@]}; do
+    find_leaf ${p}
+  done
+
+else
+# Export single path
+  find_leaf ${VAULT_PATH}
+fi
