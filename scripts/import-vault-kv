@@ -6,11 +6,12 @@
 set -e
 
 usage="$(basename "$0") -- script to export secrets from vault to files
+[WARNING] This will overwrite all key,value with input file. Make sure target path is empty and do backup before import if not empty.
 
 where:
     -i|--input   input file
 
-example:
+example: import all path=key,value from input file
     ./import-vault-kv -i input
 "
 

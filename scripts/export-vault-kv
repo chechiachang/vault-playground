@@ -11,8 +11,12 @@ where:
     -p|--path     vault path
     -o|--output   output file path
 
-example:
+example: resursively export key path under a certain path
     ./export-vault-kv -o output -p dev/max
+
+example: resursively export keys and show values path under a certain path
+    ./export-vault-kv -o output -p dev/max -S
+
 "
 
 # parse options
