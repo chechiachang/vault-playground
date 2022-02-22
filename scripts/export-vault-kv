@@ -10,6 +10,7 @@ usage="$(basename "$0") -- script to export secrets from vault to files
 where:
     -p|--path     vault path
     -o|--output   output file path
+    -S            show secret values
 
 example: resursively export key path under a certain path
     ./export-vault-kv -o output -p dev/max
