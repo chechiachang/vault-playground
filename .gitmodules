@@ -1,0 +1,3 @@
+[submodule "learn-vault-30days"]
+	path = learn-vault-30days
+  url = git@github.com:chechiachang/learn-vault-30days.git
