@@ -1,8 +1,6 @@
 Authentication
 ===
 
-WIP: May not work properly.
-
 https://www.vaultproject.io/docs/concepts/auth
 
 - [GCP](https://www.vaultproject.io/docs/auth/gcp): Use gcp credentials to get access to vault

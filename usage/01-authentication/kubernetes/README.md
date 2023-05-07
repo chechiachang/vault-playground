@@ -1,8 +1,6 @@
 Authenticate in Kubernetes
 ===
 
-WIP: May not work properly.
-
 https://www.vaultproject.io/docs/auth/kubernetes.html
 
 # Config

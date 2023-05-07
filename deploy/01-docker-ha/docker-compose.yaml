@@ -13,7 +13,7 @@ services:
   consul_1:
     image: "consul"
     hostname: "consul_1"
-    command: "agent -dev -client 0.0.0.0"
+    command: "agent -dev -client 0.0.0.0 -log-level=info"
     networks:
       subnet_1:
         ipv4_address: 172.16.238.10    
@@ -29,7 +29,7 @@ services:
   consul_2:
     image: "consul"
     hostname: "consul_2"
-    command: "agent -dev -client 0.0.0.0"
+    command: "agent -dev -client 0.0.0.0 -log-level=info"
     networks:
       subnet_1:
         ipv4_address: 172.16.238.11
@@ -40,12 +40,12 @@ services:
       - "8602:8600"
       - "9002:9001"
     environment:
-      - CONSUL_OPTS=-join 172.16.10
+      - CONSUL_OPTS=-join 172.16.238.10
   
   consul_3:
     image: "consul"
     hostname: "consul_3"
-    command: "agent -dev -client 0.0.0.0"
+    command: "agent -dev -client 0.0.0.0 -log-level=info"
     networks:
       subnet_1:
         ipv4_address: 172.16.238.12
@@ -56,7 +56,7 @@ services:
       - "8603:8600"
       - "9003:9001"
     environment:
-      - CONSUL_OPTS=-join 172.16.10
+      - CONSUL_OPTS=-join 172.16.238.10
 
   vault_1:
     depends_on:

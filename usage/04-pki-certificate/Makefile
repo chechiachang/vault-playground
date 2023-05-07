@@ -4,10 +4,10 @@ SHELL := /bin/bash
 all: ca intermediate role certificate
 
 CA_COMMON_NAME := "Chechia.net Root CA"
-ROOT_ENDPOINT := "pki-ca"
+ROOT_ENDPOINT := "pkica"
 ca:
 	# Enable endpoint
-	vault secrets enable -path=$(ROOT_ENDPOINT) pki
+	vault secrets enable -path=$(ROOT_ENDPOINT) -description="pki for chechia-net ca"  pki
 	# Set lease to 1 year
 	vault secrets tune -max-lease-ttl=87600h $(ROOT_ENDPOINT)
 	# Generate self-signed root CA & save CA cert
@@ -23,9 +23,9 @@ ca:
 .PHONY: intermediate
 
 INTER_COMMON_NAME := "Chechia.net Intermediate Authority"
-INTER_ENDPOINT := "pki-inter"
+INTER_ENDPOINT := "pkiintermediate"
 intermediate:
-	vault secrets enable -path=$(INTER_ENDPOINT) pki
+	vault secrets enable -path=$(INTER_ENDPOINT) -description="pki for chechia-net intermediate" pki
 	vault secrets tune -max-lease-ttl=43800h $(INTER_ENDPOINT)
 	# Generate intermediate CA CSR
 	mkdir -p certs/intermediate
