@@ -1,0 +1,92 @@
+fullnameOverride: vault
+
+injector:
+  enabled: true
+  metrics:
+    enabled: true
+  externalVaultAddr: https://vault.chechia.net
+  authPath: /auth/chechia-k8s
+  image:
+    repository: "hashicorp/vault-k8s"
+    tag: "1.2.1"
+    pullPolicy: IfNotPresent
+
+  agentImage:
+    repository: "hashicorp/vault"
+    tag: "1.13.2"
+
+  agentDefaults:
+    cpuRequest: "250m"
+    memRequest: "64Mi"
+    cpuLimit: "500m"
+    memLimit: "128Mi"
+
+  resources:
+    requests:
+      memory: 256Mi
+      cpu: 200m
+    limits:
+      memory: 256Mi
+      cpu: 200m
+
+  # Configures all Vault Agent sidecars to revoke their token when shutting down
+  revokeOnShutdown: true
+
+  webhook:
+    failurePolicy: Fail # block pod creation if webhook error
+    matchPolicy: Exact
+    timeoutSeconds: 30
+    # namespaceSelector is the selector for restricting the webhook to only specific namespaces.
+    namespaceSelector:
+      matchLabels:
+        vault.hashicorp.com/agent-inject: enabled
+    # Required when using failurePolicy: Fail. Policy will also block vault-injector pod creation if webhook fail and not exclude vault namespace.
+    objectSelector: |
+      matchExpressions:
+      - key: app.kubernetes.io/name
+        operator: NotIn
+        values:
+        - {{ template "vault.name" . }}-agent-injector
+    annotations: {}
+
+  replicas: 2
+  leaderElector:
+    enabled: true
+    image:
+      repository: "gcr.io/google_containers/leader-elector"
+      tag: "0.4"
+    ttl: 10s # service unaavailable time if leader is dead
+    # check internal: ttl/4 service unbahailable time if leader release lock during graceful shutdown
+    # https://github.com/kubernetes-retired/contrib/blob/master/election/lib/election.go#L121
+
+  affinity: |
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: {{ template "vault.name" . }}-agent-injector
+              app.kubernetes.io/instance: "{{ .Release.Name }}"
+              component: webhook
+          topologyKey: kubernetes.io/hostname
+  nodeSelector: {}
+
+  priorityClassName: ""
+  annotations: {}
+  extraLabels: {}
+
+  podDisruptionBudget:
+    minAvailable: 1
+    #maxUnavailable: 1
+  strategy: |
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+# injector END
+
+server:
+  enabled: false
+  authDelegator:
+    enabled: false
+  serviceAccount:
+    create: false

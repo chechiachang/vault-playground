@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chechia
+  namespace: chechia-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: chechia-backend
+      app.kubernetes.io/name: chechia-backend
+  template:
+    metadata:
+      annotations:
+        vault.hashicorp.com/agent-init-first: "true"
+        vault.hashicorp.com/agent-inject: "true"
+        vault.hashicorp.com/agent-inject-secret-config: /chechia/data/mysql
+        vault.hashicorp.com/agent-inject-template-config: |
+          {{ with secret "/chechia/data/mysql" }}
+              export MYSQL_HOST='{{ .Data.data.host }}'
+              export MYSQL_USERNAME='{{ .Data.data.username }}'
+              export MYSQL_PASSWORD='{{ .Data.data.password }}'
+              export MYSQL_DATABASE='{{ .Data.data.database }}'
+          {{ end }}
+          {{ with secret "/chechia/data/redis" }}
+              export REDIS_PASSWORD='{{ .Data.data.password }}'
+          {{ end }}
+        vault.hashicorp.com/agent-pre-populate-only: "true"
+        vault.hashicorp.com/ca-cert: /vault.ca.pem
+        vault.hashicorp.com/role: chechia
+        vault.hashicorp.com/tls-secret: vault-ca-pem
+      creationTimestamp: null
+      labels:
+        app.kubernetes.io/instance: chechia-backend
+        app.kubernetes.io/name: chechia-backend
+        app.maidev.net/log-format.chechia-backend: json
+    spec:
+      containers:
+      - command:
+        - sh
+        - -c
+        - ' source /vault/secrets/config && /usr/local/bin/chechia-backend'
+        env: []
+        image: chechia-backend:latest
+        name: chechia-backend
+        ports: []
+      serviceAccount: chechia
+      serviceAccountName: chechia
+      terminationGracePeriodSeconds: 30
