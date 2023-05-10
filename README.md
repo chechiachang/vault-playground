@@ -28,8 +28,10 @@ Avoid using root token. Create an admin token to operate.
 ```
 export VAULT_ADDR='http://127.0.0.1:8200'
 
+cd usage/02-create-policy/
 make policy
-vault token create -policy=admin -ttl=30m -format=json | tee tokens/admin.json
+
+vault token create -ttl=30m | tee policy/admin.hcl
 export VAULT_TOKEN=$(cat tokens/admin.json | jq -r .auth.client_token)
 
 vault token lookup

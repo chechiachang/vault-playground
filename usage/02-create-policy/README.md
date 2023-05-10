@@ -134,4 +134,24 @@ kv-user
 root
 ```
 
-# vault managed
+# Use policy
+
+```
+vault token create -policy=default
+
+Key                  Value
+---                  -----
+token                hvs.CAESII2HLqcIdyMbHG824ci9My4mf2pKbqrWQMJZHlWlkYPNGh4KHGh2cy5MdGlCTk9kWWtZSGwyQzBwZlpuUkxTc0Y
+token_accessor       xraOVkVFG0l8YSwf67zNoS4x
+token_duration       768h
+token_renewable      true
+token_policies       ["default"]
+identity_policies    []
+policies             ["default"]
+
+# change to policy=default
+
+export VAULT_TOKEN=hvs.CAESII2HLqcIdyMbHG824ci9My4mf2pKbqrWQMJZHlWlkYPNGh4KHGh2cy5MdGlCTk9kWWtZSGwyQzBwZlpuUkxTc0Y
+
+vault secrets list
+```
