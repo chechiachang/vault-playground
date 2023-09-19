@@ -11,7 +11,7 @@ networks:
 services:
 
   consul_1:
-    image: "consul"
+    image: "consul:1.16.1"
     hostname: "consul_1"
     command: "agent -dev -client 0.0.0.0 -log-level=info"
     networks:
@@ -27,7 +27,7 @@ services:
       - CONSUL_OPTS=-bootstrap-expect=3
 
   consul_2:
-    image: "consul"
+    image: "consul:1.16.1"
     hostname: "consul_2"
     command: "agent -dev -client 0.0.0.0 -log-level=info"
     networks:
@@ -43,7 +43,7 @@ services:
       - CONSUL_OPTS=-join 172.16.238.10
   
   consul_3:
-    image: "consul"
+    image: "consul:1.16.1"
     hostname: "consul_3"
     command: "agent -dev -client 0.0.0.0 -log-level=info"
     networks:
@@ -63,7 +63,7 @@ services:
       - consul_1
       - consul_2
       - consul_3
-    image: "vault"
+    image: "vault:1.14.3"
     hostname: "vault_1"
     networks:
       subnet_1:
@@ -83,7 +83,7 @@ services:
       - consul_1
       - consul_2
       - consul_3
-    image: "vault"
+    image: "vault:1.14.3"
     hostname: "vault_2"
     networks:
       subnet_1:
@@ -103,7 +103,7 @@ services:
       - consul_1
       - consul_2
       - consul_3
-    image: "vault"
+    image: "vault:1.14.3"
     hostname: "vault_3"
     networks:
       subnet_1:

@@ -3,7 +3,7 @@
 https://hub.docker.com/_/vault
 
 ```
-docker run --cap-add=IPC_LOCK -v config:/vault/config.d -p 8200:8200 --name vault_1 vault:1.13.2
+docker run --cap-add=IPC_LOCK -v config:/vault/config.d -p 8200:8200 --name vault_1 vault:1.14.3
 ```
 
 Log
@@ -39,7 +39,7 @@ Initialized     true
 Sealed          false
 Total Shares    1
 Threshold       1
-Version         1.13.2
+Version         1.14.3
 Build Date      2023-04-25T13:02:50Z
 Storage Type    inmem
 Cluster Name    vault-cluster-daaf9157
