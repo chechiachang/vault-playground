@@ -2,7 +2,7 @@
 # docker-compose up
 
 ```
-docker-compose up
+docker-compose up -d
 
 export CONSUL_HTTP_ADDR=0.0.0.0:8501
 export CONSUL_HTTP_SSL_VERIFY=false
