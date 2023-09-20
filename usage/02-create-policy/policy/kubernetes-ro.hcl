@@ -1,4 +1,4 @@
 # Configure kubernetes
 path "myapp/*" {
-    capabilities = ["read", "list"]
+  capabilities = ["read", "list"]
 }
