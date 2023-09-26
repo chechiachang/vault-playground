@@ -1,5 +1,5 @@
 terraform {
-  source = "../../..//examples/06-terraform/terraform"
+  source = "../..//usage/03-terraform-lives/terraform"
 
 
   extra_arguments "policy" {
