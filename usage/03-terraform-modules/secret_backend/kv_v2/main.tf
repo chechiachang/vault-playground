@@ -39,3 +39,21 @@ variable "cas_required" {
   description = "Whether to require the use of the CAS parameter for all write operations"
   default     = true
 }
+
+output "mount_path" {
+  value = vault_kv_secret_backend_v2.example.mount
+}
+
+output "max_versions" {
+  value = vault_kv_secret_backend_v2.example.max_versions
+}
+
+output "delete_version_after" {
+  value = vault_kv_secret_backend_v2.example.delete_version_after
+}
+
+output "cas_required" {
+  value = vault_kv_secret_backend_v2.example.cas_required
+}
+
+
