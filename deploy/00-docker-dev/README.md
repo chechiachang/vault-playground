@@ -39,7 +39,7 @@ Initialized     true
 Sealed          false
 Total Shares    1
 Threshold       1
-Version         1.14.3
+Version         1.17.1
 Build Date      2023-04-25T13:02:50Z
 Storage Type    inmem
 Cluster Name    vault-cluster-daaf9157

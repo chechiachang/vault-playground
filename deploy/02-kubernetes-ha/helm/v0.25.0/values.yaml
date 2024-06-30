@@ -73,7 +73,7 @@ injector:
   # required.
   agentImage:
     repository: "hashicorp/vault"
-    tag: "1.14.2"
+    tag: "1.17.1"
 
   # The default values for the injected Vault Agent containers.
   agentDefaults:
@@ -374,7 +374,7 @@ server:
 
   image:
     repository: "hashicorp/vault"
-    tag: "1.14.3"
+    tag: "1.17.1"
     # Overrides the default Image Pull Policy
     pullPolicy: IfNotPresent
 
@@ -1086,7 +1086,7 @@ csi:
 
     image:
       repository: "hashicorp/vault"
-      tag: "1.14.3"
+      tag: "1.17.1"
       pullPolicy: IfNotPresent
 
     logFormat: standard

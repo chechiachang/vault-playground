@@ -6,8 +6,10 @@ run:
   -p 8200:8200 \
   --name vault_1 \
 	-d \
-  hashicorp/vault:1.14.3 \
+  hashicorp/vault:1.17.1 \
 	vault server -config=/vault/config.d/vault.hcl
 
 rm:
+	rm vault/logs/*
+	rm vault/file/*
 	docker rm -fv vault_1
