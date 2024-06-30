@@ -63,8 +63,9 @@ https://developer.hashicorp.com/vault/tutorials/operations/generate-root
 
 ```
 export TOKEN_DIR=tmp
-export NONCE=$(vault operator generate-root -init -format json | jq '.nonce')
-export OPT=$(vault operator generate-root -init -format json | jq '.opt')
+vault operator generate-root -init -format json > $TOKEN_DIR/generate_root.json
+export NONCE=$(cat $TOKEN_DIR/generate_root.json | jq -r '.nonce')
+export OTP=$(cat $TOKEN_DIR/generate_root.json | jq -r '.otp')
 
 declare -a VAULT_UNSEAL_KEYS=($(cat $TOKEN_DIR/cluster-keys.json | jq -r ".unseal_keys_b64[]" | tr '\n' ' '))
 
@@ -78,7 +79,7 @@ vault operator generate-root -nonce=$NONCE
 
 export ENCODED_ROOT_TOKEN=
 
-vault operator generate-root -decode=$ENCODED_ROOT_TOKEN -otp=$OTP
+export VAULT_TOKEN=$(vault operator generate-root -decode=$ENCODED_ROOT_TOKEN -otp=$OTP)
 ```
 
 # Authentication
@@ -86,25 +87,11 @@ vault operator generate-root -decode=$ENCODED_ROOT_TOKEN -otp=$OTP
 ```
 vault secrets list
 
-Error listing secrets engines: Error making API request.
-
-URL: GET http://0.0.0.0:8200/v1/sys/mounts
-Code: 403. Errors:
-
-* permission denied
-```
-
-```
-export VAULT_TOKEN=hvs.seViVcSb9nEAAmodN7YbInwh
-
-vault secrets list
-
 Path          Type         Accessor              Description
 ----          ----         --------              -----------
-cubbyhole/    cubbyhole    cubbyhole_ab4b2bb6    per-token private secret storage
-identity/     identity     identity_6aaee8d0     identity store
-secret/       kv           kv_3228ce5c           key/value secret storage
-sys/          system       system_3ebcd1eb       system endpoints used for control, policy and debugging
+cubbyhole/    cubbyhole    cubbyhole_89c7c6cc    per-token private secret storage
+identity/     identity     identity_5f3b1608     identity store
+sys/          system       system_f5af7df8       system endpoints used for control, policy and debugging
 ```
 
 # Clean up
