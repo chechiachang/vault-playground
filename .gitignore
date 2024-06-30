@@ -6,8 +6,7 @@
 
 # Vault
 
-deploy/00-docker-dev/vault/file
-deploy/00-docker-dev/vault/logs
+**/tmp
 
 # Local .terraform directories
 **/.terraform/*

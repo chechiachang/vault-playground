@@ -1,15 +1,19 @@
 run: 
 	docker run --cap-add=IPC_LOCK \
-	--volume ./vault/config/:/vault/config.d \
-	--volume ./vault/file/:/vault/file \
-	--volume ./vault/logs/:/vault/logs \
   -p 8200:8200 \
-  --name vault_1 \
+	-e 'VAULT_DEV_ROOT_TOKEN_ID=chechia!23' \
+	-e 'VAULT_DEV_LISTEN_ADDRESS=0.0.0.0:8200' \
+  --name vault_0 \
 	-d \
   hashicorp/vault:1.17.1 \
-	vault server -config=/vault/config.d/vault.hcl
+	vault server -dev
+
+logs:
+	docker logs -f vault_0
+
+login:
+	vault login
 
 rm:
-	rm vault/logs/*
-	rm vault/file/*
-	docker rm -fv vault_1
+	rm -rf tmp/*
+	docker rm -fv vault_0
