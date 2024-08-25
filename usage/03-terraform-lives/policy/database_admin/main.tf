@@ -1,13 +1,17 @@
 resource "vault_policy" "main" {
-  name = "database_admin"
+  name = "database_admin_${var.name}"
 
   policy = <<-EOF
-    path "${var.path}/database" {
-      capabilities = ["create", "read", "update", "patch", "delete", "list"]
+    path "${var.path}/creds/database_admin" {
+      capabilities = ["read"]
     }
   EOF
 }
 
 variable "path" {
+  type = string
+}
+
+variable "name" {
   type = string
 }

@@ -1,5 +1,9 @@
-module "policy_database_readonly" {
-  source = "../../policy/database_write"
+resource "vault_policy" "api_server" {
+  name = "api_server"
 
-  path = "localhost_mariadb"
+  policy = <<-EOF
+    path "locahost_mariadb/creds/database_write" {
+      capabilities = ["read"]
+    }
+  EOF
 }

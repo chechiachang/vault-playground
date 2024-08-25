@@ -1,5 +1,9 @@
-module "policy_database_readonly" {
-  source = "../../policy/database_readonly"
+resource "vault_policy" "frontend" {
+  name = "frontend"
 
-  path = "localhost_mariadb"
+  policy = <<-EOF
+    path "localhost_mariadb/creds/database_readonly" {
+      capabilities = ["read"]
+    }
+  EOF
 }

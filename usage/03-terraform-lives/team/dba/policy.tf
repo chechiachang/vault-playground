@@ -1,8 +1,9 @@
-# policy
-#  ├── database_admin
+resource "vault_policy" "dba" {
+  name = "dba"
 
-module "policy_database_admin" {
-  source = "../../policy/database_admin"
-
-  path = "localhost_mariadb"
+  policy = <<-EOF
+    path "localhost_mariadb/creds/*" {
+      capabilities = ["read"]
+    }
+  EOF
 }
