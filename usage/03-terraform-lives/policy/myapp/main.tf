@@ -3,7 +3,7 @@ locals {
 }
 
 resource "vault_policy" "access_myapp" {
-  name   = "access_myapp"
+  name = "access_myapp"
 
   policy = <<-EOF
     path "${var.mount_path}/data/database/*" {

@@ -1,9 +1,9 @@
 resource "vault_policy" "main" {
-  name   = "database_admin"
+  name = "database_admin"
 
   policy = <<-EOF
     path "${var.path}/database" {
-      capabilities = ["read", "list"]
+      capabilities = ["create", "read", "update", "patch", "delete", "list"]
     }
   EOF
 }

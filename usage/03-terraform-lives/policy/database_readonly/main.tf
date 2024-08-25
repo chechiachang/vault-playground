@@ -1,5 +1,5 @@
 resource "vault_policy" "main" {
-  name   = "database_readonly"
+  name = "database_readonly"
 
   policy = <<-EOF
     path "${var.path}/database" {

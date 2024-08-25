@@ -1,5 +1,5 @@
 resource "vault_policy" "main" {
-  name   = "database_write"
+  name = "database_write"
 
   policy = <<-EOF
     path "${var.path}/database" {

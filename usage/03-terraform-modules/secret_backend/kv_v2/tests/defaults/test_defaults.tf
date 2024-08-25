@@ -10,14 +10,14 @@ terraform {
 module "main" {
   source = "../.."
 
-  mount_path = local.mount_path
+  mount_path  = local.mount_path
   description = local.description
 }
 
 locals {
-  mount_path = "test-mount"
-  description = "test-description"
-  max_versions = module.main.max_versions
+  mount_path           = "test-mount"
+  description          = "test-description"
+  max_versions         = module.main.max_versions
   delete_version_after = module.main.delete_version_after
 }
 
