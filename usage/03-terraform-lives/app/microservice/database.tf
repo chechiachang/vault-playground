@@ -1,5 +1,9 @@
-module "policy_database_readonly" {
-  source = "../../policy/database_write"
+resource "vault_policy" "microservice" {
+  name = "microservice"
 
-  path = "chechia-net-myapp/database"
+  policy = <<-EOF
+    path "localhost_mariadb/creds/database_write" {
+      capabilities = ["read"]
+    }
+  EOF
 }

@@ -1,7 +1,6 @@
 terraform {
   source = "../..//usage/03-terraform-lives/terraform"
 
-
   extra_arguments "policy" {
     commands = ["apply"]
   }

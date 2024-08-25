@@ -19,7 +19,7 @@ The unseal key and root token are displayed below in case you want to
 seal/unseal the Vault or re-authenticate.
 
 Unseal Key: FAmaVL8SmbHF/EOuqOpjpgAHOaeJDbDcbwqGsC+gcf8=
-Root Token: hvs.seViVcSb9nEAAmodN7YbInwh
+Root Token: chechia!23
 
 Development mode should NOT be used in production installations!
 ```
@@ -39,16 +39,13 @@ Initialized     true
 Sealed          false
 Total Shares    1
 Threshold       1
-Version         1.14.3
+Version         1.17.1
 Build Date      2023-04-25T13:02:50Z
 Storage Type    inmem
 Cluster Name    vault-cluster-daaf9157
 Cluster ID      d7ed0772-3e0a-89d9-d4c6-eaaa77dd1924
 HA Enabled      false
 ```
-
-- already initialized, unsealed
-- No HA (HA Enabled: false)
 
 # Authentication
 
@@ -64,7 +61,7 @@ Code: 403. Errors:
 ```
 
 ```
-export VAULT_TOKEN=hvs.seViVcSb9nEAAmodN7YbInwh
+export VAULT_TOKEN=chechia!23
 
 vault secrets list
 
@@ -79,7 +76,5 @@ sys/          system       system_3ebcd1eb       system endpoints used for contr
 # Clean up
 
 ```
-docker rm -vf vault_1
-
-vault_1
+make rm
 ```

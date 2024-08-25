@@ -1,8 +1,9 @@
-# policy
-#  ├── database_admin
+resource "vault_policy" "sre" {
+  name = "sre"
 
-module "policy_database_admin" {
-  source = "../../policy/database_admin"
-
-  path = "chechia-net-myapp/database"
+  policy = <<-EOF
+    path "localhost_mariadb/creds/*" {
+      capabilities = ["read"]
+    }
+  EOF
 }

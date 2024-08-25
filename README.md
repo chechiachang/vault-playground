@@ -1,137 +1,38 @@
 Vault Playground
 ===
 
-# Cli
+Case study to learn and test HashiCorp Vault.
 
-[Download](https://releases.hashicorp.com/vault/1.4.2/vault_1.4.2_darwin_amd64.zip)
+### Vault
 
-[Linux](https://releases.hashicorp.com/vault/1.4.2/vault_1.4.2_linux_amd64.zip)
+[Download](https://releases.hashicorp.com/vault/)
 
-# Deploy
+### Deploy
 
 [Check deploy](deploy)
 
----
+### Usage
 
-# Vault cluster admin operations
+[Check usage](usage)
 
-### Initialize
+# Case: docker vault and postgresql
 
-```
-make init
-make unseal
-```
-
-### Policy
-
-Avoid using root token. Create an admin token to operate.
-```
-export VAULT_ADDR='http://127.0.0.1:8200'
-
-cd usage/02-create-policy/
-make policy
-
-vault token create -ttl=30m | tee policy/admin.hcl
-export VAULT_TOKEN=$(cat tokens/admin.json | jq -r .auth.client_token)
-
-vault token lookup
-```
-
-### Access (with env)
-
-- avoid use root token
-- export `VAULT_TOKEN` to avoid login
+deploy vault and postgresql with docker-compose
+- vault is in dev mode
 
 ```
-export VAULT_TOKEN='s.my-token'
-export VAULT_CACERT='my-ca.crt' # Required for tls certificate self-signed with ca"
-
-vault token lookup
+cd deploy/03-docker-and-db
+docker-compose up -d
 ```
 
-### Access with login
-
-Root switch to admin token
-- create token with policy
-- vault login
+Configure vault
 
 ```
-POLICY=admin make token
-vault token lookup
+cd usage/03-terraform-lives
+
+terragrunt init
+terragrunt plan
+terragrunt apply
 ```
 
----
-
-# Vault user usage
-
-- avoid use root token
-
-```
-export VAULT_ADDR='http://127.0.0.1:8200'
-```
-
-### Secret
-
-KV
-```
-vault secrets list
-
-vault secrets enable -path=kv kv
-vault kv put kv/hello target=world
-vault kv list kv/
-```
-
-### Token
-
-```
-vault token create -policy=default
-```
-
-### Auth
-
-```
-vault auth help github
-vault login -method=github token=""
-```
-
-### Policy
-
-```
-vault policy fmt my-policy.hcl
-```
-
-```
-vault policy write my-policy my-policy.hcl
-
-vault policy write my-policy -<<EOF
-# Dev servers have version 2 of KV secrets engine mounted by default, so will
-# need these paths to grant permissions:
-path "secret/data/*" {
-  capabilities = ["create", "update"]
-}
-
-path "secret/data/foo" {
-  capabilities = ["read"]
-}
-EOF
-
-vault policy read my-policy
-```
-
-Use policy
-```
-vault token create -policy=my-policy
-```
-
----
-
-# Operation
-
-### Runs-on preemptible (Spot) Instance
-
-Pods will down with preemptible instances. New pod will be sealed when init. Require auto-unseal.
-
-Work around: unseal -> login root -> create admin -> login admin
-```
-make unseal root admin
-```
+Use vault

@@ -63,7 +63,7 @@ services:
       - consul_1
       - consul_2
       - consul_3
-    image: "hashicorp/vault:1.14.3"
+    image: "hashicorp/vault:1.17.1"
     hostname: "vault_1"
     networks:
       subnet_1:
@@ -83,7 +83,7 @@ services:
       - consul_1
       - consul_2
       - consul_3
-    image: "hashicorp/vault:1.14.3"
+    image: "hashicorp/vault:1.17.1"
     hostname: "vault_2"
     networks:
       subnet_1:
@@ -103,7 +103,7 @@ services:
       - consul_1
       - consul_2
       - consul_3
-    image: "hashicorp/vault:1.14.3"
+    image: "hashicorp/vault:1.17.1"
     hostname: "vault_3"
     networks:
       subnet_1:
