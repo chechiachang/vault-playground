@@ -11,20 +11,20 @@ variable "description" {
 }
 
 variable "teams" {
-  type = list(object({
+  type = map(object({
     team     = string
     policies = list(string)
   }))
-  default     = []
+  default     = {}
   description = "List of teams to create"
 }
 
 variable "users" {
-  type = list(object({
+  type = map(object({
     user     = string
     policies = list(string)
   }))
-  default     = []
+  default     = {}
   description = "List of users to create"
 }
 

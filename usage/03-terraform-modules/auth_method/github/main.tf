@@ -5,7 +5,7 @@ resource "vault_github_auth_backend" "main" {
 }
 
 resource "vault_github_team" "team" {
-  for_each = toset(var.teams)
+  for_each = var.teams
 
   backend  = vault_github_auth_backend.main.id
   team     = each.value["team"]
@@ -13,7 +13,7 @@ resource "vault_github_team" "team" {
 }
 
 resource "vault_github_user" "user" {
-  for_each = toset(var.users)
+  for_each = var.users
 
   backend  = vault_github_auth_backend.main.id
   user     = each.value["user"]
