@@ -38,6 +38,18 @@ variable "password" {
   sensitive   = true
 }
 
+variable "default_lease_ttl_seconds" {
+  description = "The default lease duration for the database credentials"
+  type        = number
+  default     = 3600 // 1 hour
+}
+
+variable "max_lease_ttl_seconds" {
+  description = "The maximum lease duration for the database credentials"
+  type        = number
+  default     = 14400 // 4 hours
+}
+
 variable "allowed_roles" {
   type = map(object({
     creation_statements = list(string)

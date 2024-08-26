@@ -8,7 +8,7 @@ module "auth_method_github" {
   users = {
     "chechiachang" = {
       user = "chechiachang"
-      policies   = [
+      policies = [
         "sre",
         "dba",
       ]
@@ -18,7 +18,7 @@ module "auth_method_github" {
   teams = {
     "sre" = {
       team = "sre"
-      policies   = [
+      policies = [
         "sre",
       ]
     }

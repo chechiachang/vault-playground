@@ -2,6 +2,9 @@ resource "vault_database_secrets_mount" "mysql" {
   path        = var.mount_path
   description = var.mount_description
 
+  default_lease_ttl_seconds = var.default_lease_ttl_seconds
+  max_lease_ttl_seconds     = var.max_lease_ttl_seconds
+
   mysql {
     name           = var.mount_path
     plugin_name    = "mysql-database-plugin"
