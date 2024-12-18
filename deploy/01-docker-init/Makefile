@@ -8,7 +8,7 @@ run:
   -p 8200:8200 \
   --name vault_0 \
 	-d \
-  hashicorp/vault:1.17.1 \
+  hashicorp/vault:1.17.6 \
 	vault server -config=/vault/config.d/vault.hcl
 
 logs:

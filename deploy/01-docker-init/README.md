@@ -23,7 +23,7 @@ Total Shares       0
 Threshold          0
 Unseal Progress    0/0
 Unseal Nonce       n/a
-Version            1.17.1
+Version            1.17.6
 Build Date         2024-06-25T16:33:25Z
 Storage Type       file
 HA Enabled         false

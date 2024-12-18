@@ -5,7 +5,7 @@ run:
 	-e 'VAULT_DEV_LISTEN_ADDRESS=0.0.0.0:8200' \
   --name vault_0 \
 	-d \
-  hashicorp/vault:1.17.1 \
+  hashicorp/vault:1.17.6 \
 	vault server -dev
 
 logs:
